@@ -1,9 +1,10 @@
-const days = document.getElementById('days')
-const hours = document.getElementById('hours')
-const mins = document.getElementById('mins')
-const secs = document.getElementById('secs')
+const cards = document.getElementsByClassName('card')
 
-let timeInSecs = 60 * 60 * 24 * 8;
+function card(classe, i){
+  return cards[i].getElementsByClassName(classe)[0].getElementsByClassName('half')
+}
+
+let timeInSecs = 60 * 60 * 24 * 8
 let day = parseInt(timeInSecs / (60 * 60 * 24))
 timeInSecs %= 60 * 60 *24
 let hour = parseInt(timeInSecs / (60 * 60))
@@ -12,55 +13,108 @@ let min = parseInt(timeInSecs / 60)
 timeInSecs %= 60
 let sec = parseInt(timeInSecs)
 
-days.innerHTML = day < 10 ? '0' + day : day
-hours.innerHTML = hour < 10 ? '0' + hour : hour
-mins.innerHTML = min < 10 ? '0' + min : min
-secs.innerHTML = sec < 10 ? '0' + sec : sec
+let time = [day, hour, min, sec]
 
-secs.parentElement.classList.add('wink')
-mins.parentElement.classList.add('wink')
-hours.parentElement.classList.add('wink')
-days.parentElement.classList.add('wink')
+for(let i = 0; i < cards.length; i++){
+  card('before', i)[0].setAttribute('data', time[i] < 10 ? '0' + time[i] : time[i])
+  card('before', i)[1].setAttribute('data', time[i] < 10 ? '0' + time[i] : time[i])
+  
+  if(i == 1){
+    card('after', i)[0].setAttribute('data', time[i] == 0 ? '23' : time[i] <= 10 ? '0' + (time[i] - 1) : time[i] - 1)
+    card('after', i)[1].setAttribute('data', time[i] == 0 ? '23' : time[i] <= 10 ? '0' + (time[i] - 1) : time[i] - 1)
+  }else{
+    card('after', i)[0].setAttribute('data', time[i] == 0 ? '59' : time[i] <= 10 ? '0' + (time[i] - 1) : time[i] - 1)
+    card('after', i)[1].setAttribute('data', time[i] == 0 ? '59' : time[i] <= 10 ? '0' + (time[i] - 1) : time[i] - 1)
+  }
+}
 
-var cd
+card('before', 3)[0].classList.add('flip-top')
+card('after', 3)[1].classList.add('flip-down')
 
-cd = setInterval(() => {
-  secs.parentElement.classList.remove('wink')
-  mins.parentElement.classList.remove('wink')
-  hours.parentElement.classList.remove('wink')
-  days.parentElement.classList.remove('wink')
-  void secs.offsetWidth
-  void mins.offsetWidth
-  void hours.offsetWidth
-  void days.offsetWidth
-  if(sec == 1){
-    mins.parentElement.classList.add('wink')
-    if(min == 0){
-      hours.parentElement.classList.add('wink')
-      if(hour == 0)
-        days.parentElement.classList.add('wink')
+setTimeout(() => {
+  card('before', 3)[0].classList.remove('flip-top')
+  card('after', 3)[1].classList.remove('flip-down')
+  card('before', 3)[0].classList.add('flip-top')
+  card('after', 3)[1].classList.add('flip-down')
+}, 1001)
+
+if(time[3] == 0){
+  card('before', 2)[0].classList.add('flip-top')
+  card('after', 2)[1].classList.add('flip-down')
+  if(time[2] == 0){
+    card('before', 1)[0].classList.add('flip-top')
+    card('after', 1)[1].classList.add('flip-down')
+    if(time[1] == 0){
+      card('before', 0)[0].classList.add('flip-top')
+      card('after', 0)[1].classList.add('flip-down')
     }
   }
-  if(sec == 0){
-    if(min == 0){
-      if(hour == 0){
-        if(day == 0){
+}
+
+setInterval(() => {
+  for(let i = 0; i < cards.length; i++){
+    card('before', i)[0].classList.remove('flip-top')
+    card('after', i)[1].classList.remove('flip-down')
+  }
+  
+  setTimeout(() => {
+    card('before', 3)[0].classList.add('flip-top')
+    card('after', 3)[1].classList.add('flip-down')
+  }, 1000)
+
+  if(time[3] == 1){
+    card('before', 2)[0].classList.add('flip-top')
+    card('after', 2)[1].classList.add('flip-down')
+    if(time[2] == 0){
+      card('before', 1)[0].classList.add('flip-top')
+      card('after', 1)[1].classList.add('flip-down')
+      if(time[1] == 0){
+        card('before', 0)[0].classList.add('flip-top')
+        card('after', 0)[1].classList.add('flip-down')
+      }
+    }
+  }
+
+  if(time[3] == 0){
+    if(time[2] == 0){
+      if(time[1] == 0){
+        if(time[0] == 0){
           clearInterval(cd)
           return
         }
-        hour = 24
-        day--
-        days.innerHTML = day < 10 ? '0' + day : day
+
+        time[1] = 24
+        time[0]--
+
+        card('before', 0)[0].setAttribute('data', time[0] < 10 ? '0' + time[0] : time[0])
+        card('before', 0)[1].setAttribute('data', time[0] < 10 ? '0' + time[0] : time[0])
+
+        card('after', 0)[0].setAttribute('data', time[0] <= 10 ? '0' + (time[0] - 1) : time[0] - 1)
+        card('after', 0)[1].setAttribute('data', time[0] <= 10 ? '0' + (time[0] - 1) : time[0] - 1)
       }
-      min = 60
-      hour--
-      hours.innerHTML = hour < 10 ? '0' + hour : hour
+      time[2] = 60
+      time[1]--
+      
+      card('before', 1)[0].setAttribute('data', time[1] < 10 ? '0' + time[1] : time[1])
+      card('before', 1)[1].setAttribute('data', time[1] < 10 ? '0' + time[1] : time[1])
+
+      card('after', 1)[0].setAttribute('data', time[1] == 0 ? '23' : time[1] <= 10 ? '0' + (time[1] - 1) : time[1] - 1)
+      card('after', 1)[1].setAttribute('data', time[1] == 0 ? '23' : time[1] <= 10 ? '0' + (time[1] - 1) : time[1] - 1)
     }
-    sec = 60
-    min--
-    mins.innerHTML = min < 10 ? '0' + min : min
+    time[3] = 60
+    time[2]--
+
+    card('before', 2)[0].setAttribute('data', time[2] < 10 ? '0' + time[2] : time[2])
+    card('before', 2)[1].setAttribute('data', time[2] < 10 ? '0' + time[2] : time[2])
+
+    card('after', 2)[0].setAttribute('data', time[2] == 0 ? '59' : time[2] <= 10 ? '0' + (time[2] - 1) : time[2] - 1)
+    card('after', 2)[1].setAttribute('data', time[2] == 0 ? '59' : time[2] <= 10 ? '0' + (time[2] - 1) : time[2] - 1)
   }
-  sec--
-  secs.innerHTML = sec < 10 ? '0' + sec : sec
-  secs.parentElement.classList.add('wink')
+  time[3]--
+
+  card('before', 3)[0].setAttribute('data', time[3] < 10 ? '0' + time[3] : time[3])
+  card('before', 3)[1].setAttribute('data', time[3] < 10 ? '0' + time[3] : time[3])
+
+  card('after', 3)[0].setAttribute('data', time[3] == 0 ? '59' : time[3] <= 10 ? '0' + (time[3] - 1) : time[3] - 1)
+  card('after', 3)[1].setAttribute('data', time[3] == 0 ? '59' : time[3] <= 10 ? '0' + (time[3] - 1) : time[3] - 1)
 }, 1000)

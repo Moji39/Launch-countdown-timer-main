@@ -73,6 +73,9 @@ img{
   justify-content: space-between;
 }
 .card{
+  position: relative;
+  width: min(120px, 100%);
+  aspect-ratio: 1 / 1;
   flex: 1 1 0;
   margin-right: auto;
   margin-left: auto;
@@ -81,23 +84,30 @@ img{
   margin-right: 10px;
 }
 p{
+  position: relative;
   color: var(--clr-Grayish-blue);
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: .15rem;
   text-align: center;
+  width: fit-content;
+  top: calc(min(120px, 100%) + 20px); 
+  left: 50%;
+  transform: translateX(-50%);
 }
 .flipping-card{
-  position: relative;
+  position: absolute;
   width: min(120px, 100%);
   aspect-ratio: 1 / 1;
-  margin-bottom: 20px;
   margin-right: auto;
   margin-left: auto;
   color: var(--clr-Soft-red);
   font-size: min(calc(100vw * 0.103), 65px);
 }
-.flipping-card::before, .flipping-card::after{
+.flipping-card.before{
+  z-index: 99;
+}
+.top, .bot{
   content: '';
   position: absolute;
   top: 0;
@@ -108,7 +118,7 @@ p{
   border-radius: min(calc(5px + 0.6vw), 13px);
   z-index: 1;
 }
-.flipping-card::after{
+.bot{
   top: initial;
   bottom: 0;
 }
@@ -120,41 +130,46 @@ p{
   border-radius: min(calc(5px + 0.6vw), 13px);
   z-index: 99;
 }
-.cd-content{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 98;
-}
-.wink::after, .wink::before, .wink > .shadow{
-  animation: wink linear normal both;
-  animation-duration: 0.85s;
-}
-.wink > .shadow, .wink::before{
-  transform-origin: bottom;
-}
-.wink::after{
-  transform-origin: top;
-}
-.wink > .cd-content{
-  height: 0;
-  transition: height 0.9s linear;
+.half{
   overflow: hidden;
 }
-@keyframes wink {
+.before .half::before{
+  content: attr(data);
+}
+.after .half::before{
+  content: attr(data);
+}
+.half::before{
+  position: absolute;
+  z-index: 100;
+  left: 50%; 
+}
+.top::before{
+  bottom: -50%;
+  transform: translate(-50%, 15%);
+}
+.bot::before{
+  top: -50%;
+  transform: translate(-50%, -15%);
+}
+.flip-top{
+  animation: flip linear normal both;
+  animation-duration: 0.3s;
+  transform-origin: bottom;
+}
+.flip-down{
+  animation: flip linear reverse both;
+  animation-duration: 0.3s;
+  animation-delay: 0.3s;
+  transform-origin: top;
+  z-index: 500;
+}
+@keyframes flip{
   from {
-    height: 50%;
     transform: rotateX(0deg);
   }
   to {
-    transform: rotateX(90deg)
+    transform: rotateX(90deg);
   }
 }
 @media (hover: hover){
