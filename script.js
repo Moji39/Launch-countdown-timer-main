@@ -28,15 +28,15 @@ for(let i = 0; i < cards.length; i++){
   }
 }
 
-card('before', 3)[0].classList.add('flip-top')
-card('after', 3)[1].classList.add('flip-down')
+// card('before', 3)[0].classList.add('flip-top')
+// card('after', 3)[1].classList.add('flip-down')
 
-setTimeout(() => {
-  card('before', 3)[0].classList.remove('flip-top')
-  card('after', 3)[1].classList.remove('flip-down')
-  card('before', 3)[0].classList.add('flip-top')
-  card('after', 3)[1].classList.add('flip-down')
-}, 1001)
+// setTimeout(() => {
+//   card('before', 3)[0].classList.remove('flip-top')
+//   card('after', 3)[1].classList.remove('flip-down')
+//   card('before', 3)[0].classList.add('flip-top')
+//   card('after', 3)[1].classList.add('flip-down')
+// }, 1001)
 
 if(time[3] == 0){
   card('before', 2)[0].classList.add('flip-top')
@@ -57,10 +57,10 @@ setInterval(() => {
     card('after', i)[1].classList.remove('flip-down')
   }
   
-  setTimeout(() => {
-    card('before', 3)[0].classList.add('flip-top')
-    card('after', 3)[1].classList.add('flip-down')
-  }, 1000)
+  // setTimeout(() => {
+  //   card('before', 3)[0].classList.add('flip-top')
+  //   card('after', 3)[1].classList.add('flip-down')
+  // }, 1000)
 
   if(time[3] == 1){
     card('before', 2)[0].classList.add('flip-top')
